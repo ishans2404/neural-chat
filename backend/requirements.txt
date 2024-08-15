@@ -1,0 +1,10 @@
+fastapi
+uvicorn[standard]
+python-dotenv
+youtube-transcript-api
+requests
+PyPDF2
+langchain
+langchain-community
+faiss-cpu
+google-generativeai
