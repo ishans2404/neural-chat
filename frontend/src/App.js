@@ -153,7 +153,7 @@ function App() {
     formData.append('youtube_url', youtubeUrl || '');
 
     try {
-      const response = await axios.post('http://127.0.0.1:8000/upload', formData, {
+      const response = await axios.post('https://neural-chat.onrender.com/upload', formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
 
@@ -179,7 +179,7 @@ function App() {
     setConversation([...conversation, { type: 'user', text: question }]);
 
     try {
-      const response = await axios.post('http://127.0.0.1:8000/ask', { question });
+      const response = await axios.post('https://neural-chat.onrender.com/ask', { question });
       if (response.status === 200) {
         setConversation([...conversation, 
           { type: 'user', text: question },
