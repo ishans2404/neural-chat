@@ -9,3 +9,4 @@ langchain-community
 faiss-cpu
 google-generativeai
 langchain-google-genai
+python-multipart
