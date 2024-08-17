@@ -154,22 +154,36 @@ theme = gr.themes.Monochrome().set(
 )
 
 # Gradio interface
-with gr.Blocks(theme=theme) as demo:
-    gr.Markdown("# NeuralChat", elem_id="header")
+def createApp():
+    with gr.Blocks(theme=theme) as demo:
+        gr.Markdown("# NeuralChat", elem_id="header")
 
-    with gr.Row():
-        with gr.Column(scale=2):
-            files = gr.File(label="Upload PDF Files", file_count="multiple")
-            youtube_url = gr.Textbox(label="YouTube URL")
-            upload_button = gr.Button("Upload and Process")
-            upload_output = gr.Textbox(label="Upload Status")
-            file_list = gr.Markdown(label="Uploaded Files")
+        with gr.Row():
+            with gr.Column(scale=2):
+                files = gr.File(label="Upload PDF Files", file_count="multiple")
+                youtube_url = gr.Textbox(label="YouTube URL")
+                upload_button = gr.Button("Upload and Process")
+                upload_output = gr.Textbox(label="Upload Status")
+                file_list = gr.Markdown(label="Uploaded Files")
 
-        with gr.Column(scale=5):
-            chatbot = gr.Chatbot(show_copy_button=True, scale=1.5)
-            msg = gr.Textbox(label="Ask a question", lines=1)
-            upload_button.click(process_files, inputs=[files, youtube_url], outputs=[upload_output, file_list])
-            msg.submit(chat, inputs=[msg, chatbot], outputs=[chatbot, msg])
+            with gr.Column(scale=5):
+                chatbot = gr.Chatbot(show_copy_button=True, scale=1.5)
+                msg = gr.Textbox(label="Ask a question", lines=1)
+                upload_button.click(process_files, inputs=[files, youtube_url], outputs=[upload_output, file_list])
+                msg.submit(chat, inputs=[msg, chatbot], outputs=[chatbot, msg])
+    return demo
+
+from fastapi import FastAPI
+
+app = FastAPI()
+gradioApp = createApp()
+
+app = gr.mount_gradio_app(app, gradioApp, path="/")
+
+@app.get("/")
+def read_main():
+    return {"message": "This is your main app. The Gradio demo is served at the root path."}
 
 if __name__ == "__main__":
-    demo.launch()
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=8000)
