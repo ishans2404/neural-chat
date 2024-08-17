@@ -109,10 +109,11 @@ def process_files(files, youtube_url):
     create_vector_store(chunks)
 
     # Remove uploaded files after processing
-    for file in os.listdir("uploads"):
-        file_path = os.path.join("uploads", file)
-        if os.path.exists(file_path):
-            os.remove(file_path)
+    if os.path.exists("uploads"):
+        for file in os.listdir("uploads"):
+            file_path = os.path.join("uploads", file)
+            if os.path.exists(file_path):
+                os.remove(file_path)
 
     # Format the file list for display
     file_list_text = "\n".join(
